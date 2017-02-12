@@ -2,7 +2,6 @@ html, body {
 	margin : 0;
 	padding: 0;
 	background-color: tan;
- 	overflow: hidden;
 }
 
 .container {
@@ -28,6 +27,16 @@ html, body {
 	font-weight: bold;
 	background-color: darkgrey;
 }
+
 .clock-ele img {
 	width: 100%;
+}
+
+.credit {
+	font-size: 1.5em;
+	width: auto;
+	margin: 12px 288px;
+	border: 3px solid #444;
+	text-align: center;
+	background-color: #aaa;
 }
