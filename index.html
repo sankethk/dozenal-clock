@@ -7,7 +7,7 @@
 	<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
 	<script>
 		$(function() {
-			var solsData = [
+			var solsticeData = [
 				[ 21, 21 ],	//	UTC+00:45 1956> 11528-11529 = *67↋↊-67↋↋
 				[ 21, 22 ],	//	UTC+00:45 1957> 11529-11520 = *67↋↋-6800
 				[ 21, 22 ],	//	UTC+00:45 1958> 11520-11521 = *6800-6801
@@ -151,7 +151,9 @@
 				[ 20, 20 ],	//	UTC+00:45 2096> 11658-11659 = *68↋6-68↋7
 				[ 20, 21 ],	//	UTC+00:45 2097> 11659-11660 = *68↋7-68↋8
 				[ 20, 21 ],	//	UTC+00:45 2098> 11660-11661 = *68↋8-68↋9
-				[ 21, 21 ]	//	UTC+00:45 2099> 11661-11662 = *68↋9-68↋↊
+				[ 21, 21 ],	//	UTC+00:45 2099> 11661-11662 = *68↋9-68↋↊
+				[ 21, 21 ],	//	UTC+00:45 2100> 11662-11663 = *68↋↊-68↋↋
+				[ 21, 22 ]	//	UTC+00:45 2101> 11663-11664 = *68↋↋-6900
 			];
 
 			var schemeData = [
@@ -161,10 +163,10 @@
 			];
 
 			var REF_YEAR = 1957 - 1;
-			var HOLOCENE_EPOCH = 9563;
+			var HOLOCENE_EPOCH = 9564 - 1;
 			var DAY_MILLIS = 24 * 60 * 60 * 1000;
-			var TIME_ZONE = 'T00:00:00+00:46';
-			var OFFSET_MILLIS = 46 * 60 * 1000;
+			var TIME_ZONE = 'T00:00:00+00:45';
+			var OFFSET_MILLIS = 45 * 60 * 1000;
 			var HEXCIA_MILLIS = Math.pow(12, 6) / DAY_MILLIS;
 
 			function toFixed(num, len) {
@@ -177,8 +179,8 @@
 
 			function getNewYear(today) {
 				var year = today.getUTCFullYear();
-				var newYearCur = new Date(year + '-06-' + solsData[year - REF_YEAR][0] + TIME_ZONE);
-				var newYearPrev = new Date((year - 1) + '-06-' + solsData[(year - 1) - REF_YEAR][0] + TIME_ZONE);
+				var newYearCur = new Date(year + '-06-' + solsticeData[year - REF_YEAR][0] + TIME_ZONE);
+				var newYearPrev = new Date((year - 1) + '-06-' + solsticeData[(year - 1) - REF_YEAR][0] + TIME_ZONE);
 				if (today >= newYearCur) {
 					return newYearCur;
 				} else {
@@ -188,9 +190,9 @@
 
 			function getScheme(newYear) {
 				var year = newYear.getUTCFullYear();
-				var date1 = new Date(year + '-06-' + solsData[year - REF_YEAR][0] + TIME_ZONE);
-				var date2 = new Date(year + '-12-' + solsData[year - REF_YEAR][1] + TIME_ZONE);
-				var date3 = new Date((year + 1) + '-06-' + solsData[(year + 1) - REF_YEAR][0] + TIME_ZONE);
+				var date1 = new Date(year + '-06-' + solsticeData[year - REF_YEAR][0] + TIME_ZONE);
+				var date2 = new Date(year + '-12-' + solsticeData[year - REF_YEAR][1] + TIME_ZONE);
+				var date3 = new Date((year + 1) + '-06-' + solsticeData[(year + 1) - REF_YEAR][0] + TIME_ZONE);
 				var days1 = (date2.getTime() - date1.getTime()) / DAY_MILLIS;
 				var days2 = (date3.getTime() - date2.getTime()) / DAY_MILLIS;
 				if (days1 === 183) {
@@ -230,12 +232,12 @@
 				var quadciaDay = parseInt(dozTime.charAt(11), 12);
 				var pentciaDay = parseInt(dozTime.charAt(12), 12);
 				var hexciaDay = parseInt(dozTime.charAt(13), 12);
-				var quadciaDayInDeg = quadciaDay * 30;// + pentciaDay * 30 / 12;
+				var quadciaDayInDeg = quadciaDay * 30;
 				var triciaDayInDeg = triciaDay * 30 + quadciaDay * 30 / 12;
 				var biciaDayInDeg = biciaDay * 30 + triciaDay * 30 / 12;
 				var unciaDayInDeg = unciaDay * 30 + biciaDay * 30 / 12;
 				var display = dozTime.substring(1,5) + '`' + dozTime.charAt(5) + '/' + dozTime.charAt(6) + '/' + dozTime.charAt(7)  + ' ≡ ' +  dozTime.charAt(8) + ':' + dozTime.charAt(9) + ':' + dozTime.charAt(10) + '`' + dozTime.charAt(11) + '' + dozTime.charAt(12);
-				display = display.replace(/a/g, '↊').replace(/b/g, '↋'); //•▐≡■↊↋
+				display = display.replace(/a/g, '↊').replace(/b/g, '↋');
 				$('.display').text(display);
 				$('.clock-ele.unciahand').css({
 					'transform': 'rotate(' + unciaDayInDeg + 'deg)'
@@ -250,11 +252,6 @@
 					'transform': 'rotate(' + quadciaDayInDeg + 'deg)'
 				});
 			},(1/HEXCIA_MILLIS));
-
-			for (var i = 1; i < solsData.length - 1; i++) {
-				var d = new Date((REF_YEAR + i) + '-06-' + solsData[i][0] + TIME_ZONE);
-				console.log(('[yr|s] = [' + getHoloceneTime(d).substring(1,5) + '|' + getScheme(d) + ']').replace(/a/g, '↊').replace(/b/g, '↋'));
-			}
 		});
 	</script>
 </head>
@@ -267,7 +264,6 @@
 			<div class="clock-ele unciahand"> <img src="img/biciahand.png"> </div>
 			<div class="clock-ele biciahand"> <img src="img/triciahand.png"> </div>
 			<div class="clock-ele triciahand"> <img src="img/quadciahand.png"> </div>
-			<!-- <div class="clock-ele quadciahand"> <img src="img/quadciahand.png"> </div> -->
 			<div class="clock-ele nose"> <img src="img/nose.png"> </div>
 		</div>
 		<div class="display">0000`0/0/0 ≡ 0:0:00</div>
