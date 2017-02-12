@@ -28,33 +28,6 @@ html, body {
 	font-weight: bold;
 	background-color: darkgrey;
 }
-
-@keyframes hand {
-    0%{transform: rotate(0deg);}
-    25%{transform: rotate(90deg);}
-    50%{transform: rotate(180deg);}
-    100%{transform: rotate(360deg);}
-}
-
 .clock-ele img {
 	width: 100%;
-	animation-name: hand;
-	animation-timing-function: linear;
-	animation-iteration-count: infinite;
 }
-
-/*.quadciahand img {
-	animation-duration: 50s;	// (1/34.56ms)(12^3)
-}
-
-.triciahand img {
-	animation-duration: 600s;	// (1/34.56ms)(12^4)
-}
-
-.biciahand img {
-	animation-duration: 7200s;	// (1/34.56ms)(12^5)
-}
-
-.unciahand img {
-	animation-duration: 86400s; // (1/34.56ms)(12^6)
-}*/
